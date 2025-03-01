@@ -5,8 +5,8 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 @Controller('employees')
 export class EmployeesController {
-  constructor(private readonly employeesService: EmployeesService) {}
-
+  constructor(private readonly employeesService: EmployeesService){}
+  
   @Post()
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
     return this.employeesService.create(createEmployeeDto);
@@ -18,7 +18,9 @@ export class EmployeesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe({version: '4'})) id: string) {
+  findOne(@Param('id', new ParseUUIDPipe({version: '4'})) 
+    id: string
+  ) {
     return this.employeesService.findOne(id);
   }
 
@@ -28,7 +30,10 @@ export class EmployeesController {
   }
 
   @Delete(':id')
-  remove(@Param('id',new ParseUUIDPipe({version: '4'})) id: string) {
+  remove(
+    @Param('id',new ParseUUIDPipe({version: '4'})) 
+    id: string
+  ) {
     return this.employeesService.remove(id);
   }
 }
