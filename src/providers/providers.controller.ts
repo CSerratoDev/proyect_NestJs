@@ -19,7 +19,7 @@ export class ProvidersController {
 
   @Get()
   findAll(@UserData() user: User) {
-    if(!user.userRoles) throw new UnauthorizedException("No estas autorizado, solo ADMINS");
+    if(user.userRoles.includes("Employee")) throw new UnauthorizedException("No estas autorizado, solo ADMINS y Managers");
     return this.providersService.findAll();
   }
 

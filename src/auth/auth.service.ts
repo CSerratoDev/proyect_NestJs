@@ -32,8 +32,9 @@ export class AuthService {
             throw new UnauthorizedException("You are not authorized");
         }
         const payload = {
-            user: user.userEmail,
-            password : user.userPassword
+            userEmail: user.userEmail,
+            userPassword : user.userPassword,
+            userRoles: user.userRoles
         }
         const token = this.jwtService.sign(payload);
         return token
