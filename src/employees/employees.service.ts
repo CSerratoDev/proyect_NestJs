@@ -1,21 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './entities/employee.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {v4 as uuid} from "uuid";
+import { CreateEmployeeDto } from './dto/create-employee.dto';
 
 @Injectable()
 export class EmployeesService {
   
   constructor(
     @InjectRepository(Employee)
-    private employeeRepository: Repository<Employee>
-  ){}
+    private employeeRepository: Repository<Employee>){}
 
-  async create(createEmployeeDto: CreateEmployeeDto) {
-    const employee = await this.employeeRepository.save(createEmployeeDto)
+  create(createEmployeeDto: CreateEmployeeDto) {
+    const employee = this.employeeRepository.save(createEmployeeDto);
     return employee;
   }
 

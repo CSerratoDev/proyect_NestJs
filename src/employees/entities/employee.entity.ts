@@ -7,6 +7,7 @@ import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne 
 export class Employee {
     @PrimaryGeneratedColumn('uuid')
     employeeId: string;
+    
     @Column('text')
     employeeName: string;
     @Column('text')
@@ -22,13 +23,11 @@ export class Employee {
         nullable : true
     })
     employeePhoto: string;
-
     @ManyToOne (() => Location, (location) => location.employees)
     @JoinColumn({
         name: "locationId"
     })
     location: Location;
-
     @OneToOne(()=> User)
     @JoinColumn({
         name: "userId"
