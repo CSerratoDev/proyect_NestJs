@@ -5,8 +5,10 @@ import { UpdateManagerDto } from './dto/update-manager.dto';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ROLES } from 'src/auth/constanst/roles.constants';
 import { apiAuth } from 'src/auth/decorators/api.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
 @apiAuth()
+@ApiTags("Managers")
 @Controller('managers')
 export class ManagersController {
   constructor(private readonly managersService: ManagersService) {}

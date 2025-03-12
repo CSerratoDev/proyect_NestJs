@@ -5,8 +5,10 @@ import { UpdateRegionDto } from './dto/update-region.dto';
 import { ROLES } from 'src/auth/constanst/roles.constants';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { apiAuth } from 'src/auth/decorators/api.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
 @apiAuth()
+@ApiTags("Regions")
 @Controller('regions')
 export class RegionsController {
   constructor(private readonly regionsService: RegionsService) {}
