@@ -2,17 +2,17 @@ import { ArrayNotEmpty, IsArray, isArray, IsObject, IsOptional, IsString, MaxLen
 import { Location } from "../entities/location.entity";
 import { Region } from "src/regions/entities/region.entity";
 
-export class CreateLocationDto{
+export class CreateLocationDto extends Location {
     @IsString()
     @MaxLength(35)
-    locationName: string;
+    declare locationName: string;
     @IsString()
     @MaxLength(160)
-    locationAddress: string;
+    declare locationAddress: string;
     @IsArray()
     @ArrayNotEmpty()
-    locationLatLng: number[]
+    declare locationLatLng: number[]
     @IsObject()
     @IsOptional()
-    region: Region;
+    declare region: Region;
 }
