@@ -18,7 +18,7 @@ import { JWT_KEY, TOKEN_NAME } from '../constanst/jwt.constants';
       let token = this.extractTokenFromHeader(request);
       if (!token) {
         token = request.cookies?.[TOKEN_NAME];
-        throw new UnauthorizedException();
+        if (!token) throw new UnauthorizedException();
       }
       try {
         const payload = await this.jwtService.verifyAsync(
