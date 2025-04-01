@@ -5,24 +5,24 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "ty
 @Entity()
 export class Manager {
     @PrimaryGeneratedColumn('uuid')
-    managerId: string;
+    declare managerId: string;
     @Column('text')
-    managerFullName: string;
+    declare managerFullName: string;
     @Column('float')
-    managerSalary: number;
+    declare managerSalary: number;
     @Column('text', {
         unique: true,
     })
-    managerEmail: string;
+    declare managerEmail: string;
     @Column('text')
-    managerPhoneNumber: string;
+    declare managerPhoneNumber: string;
 
     @OneToOne(() => Location)
-    location: Location;
+    declare location: Location;
 
     @OneToOne(()=>User)
     @JoinColumn({
         name: "userId"
     })
-    user : User
+    declare user : User
 }

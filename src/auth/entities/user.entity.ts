@@ -5,22 +5,22 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class User{
     @PrimaryGeneratedColumn('uuid')
-    userId: string;
+    declare userId: string;
     @Column('text',{
         unique: true,
     })
-    userEmail: string;
+    declare userEmail: string;
     @Column('text')
-    userPassword: string;
+    declare userPassword: string;
     
     @Column("simple-array", {
         default: "Employee"
     })
-    userRoles: string[];
+    declare userRoles: string[];
     
     @OneToOne(() => Manager)
-    manager: Manager;
+    declare manager: Manager;
 
     @OneToOne(() => Employee)
-    employee: Employee;
+    declare employee: Employee;
 }

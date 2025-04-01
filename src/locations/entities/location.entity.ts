@@ -7,22 +7,22 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne,
 @Entity()
 export class Location {
     @PrimaryGeneratedColumn('increment')
-    locationId: number;
+    declare locationId: number;
     @ApiProperty({
         default: "OXXO Juriquilla"
     })
     @Column('text')
-    locationName: string;
+    declare locationName: string;
     @ApiProperty({
         default: "Avenida X, S/N, 01000"
     })
     @Column('text')
-    locationAddress: string;
+    declare locationAddress: string;
     @ApiProperty({
         default: [12,12]
     })
     @Column('simple-array')
-    locationLatLng: number[];
+    declare locationLatLng: number[];
 
     @OneToOne(()=> Manager, {
         eager : true,
@@ -30,14 +30,14 @@ export class Location {
     @JoinColumn({
         name: "managerId"
     })
-    manager: Manager
+    declare manager: Manager
     
     @ManyToOne(() => Region, (region) => region.locations)
     @JoinColumn({
         name: "regionId"
     })
-    region: Region    
+    declare region: Region    
     @OneToMany(()=> Employee, (employee) => employee.location)
-    employees: Employee[]
+    declare employees: Employee[]
 
 }

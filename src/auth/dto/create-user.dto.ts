@@ -6,19 +6,19 @@ export class CreateUserDto {
         default: "user@gmail.com"
     })
     @IsEmail()
-    userEmail: string;
+    declare userEmail: string;
 
     @ApiProperty({
         default: "5618616wear165"
     })
     @IsString()
     @MinLength(8)
-    userPassword: string;
+    declare userPassword: string;
 
     @ApiProperty({
         default: "Employee"
     })
     @IsOptional()
     @IsIn(["Admin", "Employee", "Manager"])
-    userRoles: string[]
+    declare userRoles: string[]
 }

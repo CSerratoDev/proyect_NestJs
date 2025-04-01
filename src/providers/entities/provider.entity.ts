@@ -4,18 +4,18 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Provider {
     @PrimaryGeneratedColumn('uuid')
-    providerId: string;
+    declare providerId: string;
     @Column('text')
-    providerName: string;
+    declare providerName: string;
     @Column('text', {
         unique: true,
     })
-    providerEmail: string;
+    declare providerEmail: string;
     @Column({
         type: 'text',
         nullable: true
     })
-    providerPhoneNumber: string;
+    declare providerPhoneNumber: string;
     @OneToMany(() => Product, (photo) => photo.provider)
-    products: Product[]
+    declare products: Product[]
 }

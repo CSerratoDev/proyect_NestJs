@@ -4,19 +4,19 @@ import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "ty
 @Entity()
 export class Product {
     @PrimaryGeneratedColumn('uuid')
-    productId: string;
+    declare productId: string;
     
     @Column({type: 'text'})
-    productName: string;
+    declare productName: string;
     @Column({type: 'float'})
-    price: number;
+    declare price: number;
     @Column({type: 'int'})
-    countSeal: number;
+    declare countSeal: number;
     @ManyToOne(() => Provider, (provider) => provider.products,{
        //eager: true
     })
     @JoinColumn({
         name: "providerId"
     })
-    provider: Provider
+    declare provider: Provider
 }

@@ -5,15 +5,15 @@ import { Manager } from "../entities/manager.entity";
 export class CreateManagerDto extends Manager{
     @IsString()
     @MaxLength(80)
-    managerFullName: string;
+    declare managerFullName: string;
     @IsEmail()
-    managerEmail: string;
+    declare managerEmail: string;
     @IsNumber()
-    managerSalar: number;
+    declare managerSalar: number;
     @IsString()
     @MaxLength(16)
-    managarPhoneNumber: number;
+    declare managarPhoneNumber: number;
     @IsObject()
     @IsOptional()
-    location : Location;
+    declare location : Location;
 }
