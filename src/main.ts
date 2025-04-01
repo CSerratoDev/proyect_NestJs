@@ -9,6 +9,12 @@ async function bootstrap() {
       origin: process.env.allowedOrigins
     }
   });
+
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('OXXO API')
