@@ -1,4 +1,4 @@
-import { ArrayNotEmpty, IsArray, isArray, IsObject, IsOptional, IsString, MaxLength } from "class-validator";
+import { ArrayNotEmpty, IsArray, isArray, IsObject, IsOptional, IsString, IsUUID, MaxLength } from "class-validator";
 import { Location } from "../entities/location.entity";
 import { Region } from "src/regions/entities/region.entity";
 
@@ -15,4 +15,7 @@ export class CreateLocationDto extends Location {
     @IsObject()
     @IsOptional()
     declare region: Region;
+    @IsUUID()
+    @IsOptional()
+    declare manager : string;
 }
