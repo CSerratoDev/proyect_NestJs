@@ -43,8 +43,7 @@ export class EmployeesService {
       ...updateEmployeeDto
     })
     if(!employeeToUpdate) throw new NotFoundException();
-    this.employeeRepository.save(employeeToUpdate);
-    return employeeToUpdate;
+      return this.employeeRepository.save(employeeToUpdate);
   }
 
   remove(id: string) {

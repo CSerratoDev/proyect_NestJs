@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
 import { Provider } from './entities/provider.entity';
@@ -39,11 +39,16 @@ export class ProvidersService {
       providerId: id,
       ...updateProviderDto,
     });
+    if (!product) throw new BadRequestException(`Provider with ID ${id} not found`);
+      return this.providerRepository.save(product);
   }
 
   remove(id: string) {
     this.providerRepository.delete({
       providerId: id,
     });
+    return {
+      message: 'Provider deleted successfully',
+    }
   }
 }
