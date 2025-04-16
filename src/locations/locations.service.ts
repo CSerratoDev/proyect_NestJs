@@ -12,7 +12,7 @@ export class LocationsService {
     @InjectRepository(Location)
     private locationRepository: Repository<Location>,
     @InjectRepository(Manager)
-    private managerRepository: Repository<Manager>
+    private managerRepository: Repository<Manager>,
   ){}
   create(createLocationDto: CreateLocationDto) {
     return this.locationRepository.save(createLocationDto)
@@ -31,11 +31,13 @@ export class LocationsService {
   }
 
   async update(id: number, updateLocationDto: UpdateLocationDto) {
-    this.managerRepository
+    await this.managerRepository
     .createQueryBuilder()
     .update()
-    .set({ location: null })
-    .where("locationId = :id",{
+    .set({ 
+      location : () => 'NULL', 
+    })
+    .where("locationId = :id", {
       id, 
     }).execute();
 
@@ -43,13 +45,21 @@ export class LocationsService {
       locationId: id,
       ...updateLocationDto,
     })
-    const savedLocation = await this.locationRepository.save(location)
+    if (!location) {
+      throw new NotFoundException('Location not found for update');
+    }
+    const savedLocation = await this.locationRepository.save(location);
 
-    const updatedManager = await this.managerRepository.preload({
-      managerId: updateLocationDto.manager,
-      location: location,
-    })
-    this.managerRepository.save(updatedManager);
+    if (updateLocationDto.manager) {
+      const updatedManager = await this.managerRepository.preload({
+        managerId: updateLocationDto.manager,
+        location: location,
+      });
+      if (!updatedManager) {
+        throw new NotFoundException('Manager not found for update');
+      }
+      await this.managerRepository.save(updatedManager);
+    }
     return savedLocation;
   }
 

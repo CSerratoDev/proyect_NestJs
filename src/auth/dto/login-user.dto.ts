@@ -11,7 +11,7 @@ export class LoginUserDto{
     @ApiProperty({
         default: "e2dawfwae2"
     })
-    @IsString()
     @MinLength(8)
+    @IsString()
     declare userPassword: string;
 }
