@@ -13,7 +13,7 @@ export class CreateManagerDto extends Manager{
     @IsString()
     @MaxLength(16)
     declare managarPhoneNumber: number;
-    @IsObject()
+    @IsNumber()
     @IsOptional()
     declare location : Location;
 }

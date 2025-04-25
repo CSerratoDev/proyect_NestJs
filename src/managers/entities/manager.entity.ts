@@ -21,7 +21,7 @@ export class Manager {
     @JoinColumn({
         name: "locationId"
     })
-    declare location: Location;
+    declare location: Location | string;
 
     @OneToOne(()=>User)
     @JoinColumn({
