@@ -3,6 +3,7 @@ import { IsInt, IsNumber, IsObject, IsOptional, IsString, IsUUID, MaxLength } fr
 import { Product } from "../entities/product.entity";
 
 export class CreateProductDto extends Product {
+    @IsString()
     @IsUUID('4')
     @IsOptional()
     declare productId: string;
@@ -13,6 +14,7 @@ export class CreateProductDto extends Product {
     declare price: number;
     @IsInt()
     declare countSeal: number;
-    @IsObject()
+    @IsString()
+    @IsUUID()
     declare provider: Provider;
 }
