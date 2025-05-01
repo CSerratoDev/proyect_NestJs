@@ -17,9 +17,11 @@ export class ProvidersService {
   }
 
   findAll() {
-    return this.providerRepository.find({relations : {
-      products: true,
-    }});
+    return this.providerRepository.find({
+      relations : {
+        products: true,
+      }
+    });
   }
 
   findByName(name: string){
@@ -30,24 +32,26 @@ export class ProvidersService {
     return provider;
   }
 
-  findOne(id: string) {
-    return this.providerRepository.findOne({
+  async findOne(id: string) {
+    const provider = await this.providerRepository.findOne({
       where : {
-        providerId: id,
+        providerId: id
       },
       relations: {
         products: true,
       }
     });
+    if(!provider) throw new NotFoundException("Not provider found")
+    return provider;
   }
 
   async update(id: string, updateProviderDto: UpdateProviderDto) {
     const product = await this.providerRepository.preload({
       providerId: id,
-      ...updateProviderDto,
+        ...updateProviderDto,
     });
     if (!product) throw new BadRequestException(`Provider with ID ${id} not found`);
-      return this.providerRepository.save(product);
+    return this.providerRepository.save(product);
   }
 
   remove(id: string) {

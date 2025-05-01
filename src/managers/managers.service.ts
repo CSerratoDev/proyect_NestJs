@@ -11,6 +11,7 @@ export class ManagersService {
     @InjectRepository(Manager)
     private managerRepository: Repository <Manager>
   ){}
+
   create(createManagerDto: CreateManagerDto) {
     return this.managerRepository.save(createManagerDto)
   }
@@ -23,13 +24,15 @@ export class ManagersService {
     })
   }
 
-  findOne(id: string) {
-    const manager = this.managerRepository.findOne({
-      where: { managerId: id},
+  async findOne(id: string) {
+    const manager = await this.managerRepository.findOne({
+      where: {
+         managerId: id
+      },
       relations: {
         location: true,
       }
-    })
+    });
     if (!manager) throw new NotFoundException("Not manager found")
     return manager;
   }
@@ -37,15 +40,18 @@ export class ManagersService {
   async update(id: string, updateManagerDto: UpdateManagerDto) {
     const managerToUpdate = await this.managerRepository.preload({
       managerId: id,
-      ... updateManagerDto
+        ...updateManagerDto
     })
-    if (!managerToUpdate) throw new BadRequestException()
-      return this.managerRepository.save(managerToUpdate);
+    if (!managerToUpdate) throw new BadRequestException(`Manager with ID ${id} not found`);
+    return this.managerRepository.save(managerToUpdate);
   }
 
   remove(id: string) {
-    return this.managerRepository.delete({
+    this.managerRepository.delete({
       managerId: id
-    })
+    });
+    return {
+      message: 'Provider deleted successfully',
+    }
   }
 }

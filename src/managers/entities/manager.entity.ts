@@ -5,27 +5,27 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "ty
 @Entity()
 export class Manager {
     @PrimaryGeneratedColumn('uuid')
-    declare managerId: string;
+    managerId!: string;
     @Column('text')
-    declare managerFullName: string;
+    managerFullName!: string;
     @Column('float')
-    declare managerSalary: number;
+    managerSalary!: number;
     @Column('text', {
         unique: true,
     })
-    declare managerEmail: string;
+    managerEmail!: string;
     @Column('text')
-    declare managerPhoneNumber: string;
+    managerPhoneNumber!: string;
 
     @OneToOne(() => Location)
     @JoinColumn({
         name: "locationId"
     })
-    declare location: Location | string;
+    location!: Location | string;
 
     @OneToOne(()=>User)
     @JoinColumn({
         name: "userId"
     })
-    declare user : User
+    user! : User
 }

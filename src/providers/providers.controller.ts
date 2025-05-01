@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UseGuards, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ProvidersService } from './providers.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
@@ -15,7 +15,7 @@ import { ApiTags } from '@nestjs/swagger';
 export class ProvidersController {
   constructor(private readonly providersService: ProvidersService) {}
 
-  @Auth(ROLES.MANAGER)
+  @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Post()
   create(@Body() createProviderDto: CreateProviderDto) {
     return this.providersService.create(createProviderDto);
@@ -24,7 +24,7 @@ export class ProvidersController {
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Get()
   findAll(@UserData() user: User) {
-    if(user.userRoles.includes("Employee")) throw new UnauthorizedException("No estas autorizado, solo ADMINS y Managers");
+    if(user.userRoles.includes("Employee")) throw new UnauthorizedException("No estas autorizado, solo Admins y Managers");
     return this.providersService.findAll();
   }
 
@@ -36,10 +36,8 @@ export class ProvidersController {
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    const provider = this.providersService.findOne(id);
-    if(!provider) throw new NotFoundException();
-    return provider;
+  async findOne(@Param('id') id: string) {
+    return this.providersService.findOne(id);
   }
 
   @Auth(ROLES.MANAGER)

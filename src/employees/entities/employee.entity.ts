@@ -6,31 +6,31 @@ import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne 
 @Entity()
 export class Employee {
     @PrimaryGeneratedColumn('uuid')
-    declare employeeId: string;
+    employeeId!: string;
     
     @Column('text')
-    declare employeeName: string;
+    employeeName!: string;
     @Column('text')
-    declare employeeLastName: string;
+    employeeLastName!: string;
     @Column('text')
-    declare employeePhoneNumber: string;
+    employeePhoneNumber!: string;
     @Column('text', {
         unique: true,
     })
-    declare employeeEmail: string;
+    employeeEmail!: string;
     @Column({
         type: 'text',
         nullable : true
     })
-    declare employeePhoto: string;
+    employeePhoto!: string;
     @ManyToOne (() => Location, (location) => location.employees)
     @JoinColumn({
         name: "locationId"
     })
-    declare location: Location;
+    location!: Location;
     @OneToOne(()=> User)
     @JoinColumn({
         name: "userId"
     })
-    declare user: User;
+    user!: User;
 }
