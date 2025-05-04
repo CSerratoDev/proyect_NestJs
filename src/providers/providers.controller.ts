@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UnauthorizedException, ParseUUIDPipe } from '@nestjs/common';
 import { ProvidersService } from './providers.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
@@ -36,8 +36,8 @@ export class ProvidersController {
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.providersService.findOne(id);
+  findOne(@Param('id', new ParseUUIDPipe({version: '4'})) id: string) {
+      return this.providersService.findOne(id);
   }
 
   @Auth(ROLES.MANAGER)

@@ -34,17 +34,13 @@ export class LocationsService {
     await this.managerRepository
     .createQueryBuilder()
     .update()
-    .set({ 
-      location : () => 'NULL', 
-    })
-    .where("locationId = :id", {
-      id, 
-    }).execute();
+    .set({location : () => 'NULL'})
+    .where("locationId = :id", {id}).execute();
 
     const location = await this.locationRepository.preload({
       locationId: id,
       ...updateLocationDto,
-    })
+    });
     if (!location) {
       throw new NotFoundException('Location not found for update');
     }

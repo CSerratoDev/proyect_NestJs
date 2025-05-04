@@ -14,6 +14,7 @@ export class CreateEmployeeDto extends Employee {
     @ApiProperty()
     @IsOptional()
     declare user: User;
+    
     @ApiProperty()
     @IsString()
     @MaxLength(30)
@@ -30,6 +31,7 @@ export class CreateEmployeeDto extends Employee {
     @IsString()
     @IsEmail()
     declare employeeEmail: string;
+    
     @ApiProperty()
     @IsOptional()
     @IsObject()

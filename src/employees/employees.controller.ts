@@ -49,9 +49,7 @@ export class EmployeesController {
 
   @Auth(ROLES.MANAGER)
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe({version: '4'})) 
-    id: string
-  ) {
+  findOne(@Param('id', new ParseUUIDPipe({version: '4'})) id: string) {
     return this.employeesService.findOne(id);
   }
 
