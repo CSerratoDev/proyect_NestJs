@@ -1,3 +1,4 @@
+import { IsString } from "class-validator";
 import { User } from "src/auth/entities/user.entity";
 import { Location } from "src/locations/entities/location.entity";
 import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from "typeorm";
@@ -6,7 +7,7 @@ import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne 
 export class Employee {
     @PrimaryGeneratedColumn('uuid')
     employeeId!: string;
-    
+    @IsString()
     @Column('text')
     employeeName!: string;
     @Column('text')

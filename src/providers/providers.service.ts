@@ -8,8 +8,7 @@ import { Repository, Like } from 'typeorm';
 @Injectable()
 export class ProvidersService {
   constructor(
-      @InjectRepository(Provider)
-      private providerRepository: Repository<Provider>
+      @InjectRepository(Provider) private readonly providerRepository: Repository<Provider>
   ){}
 
   create(createProviderDto: CreateProviderDto) {
@@ -17,30 +16,22 @@ export class ProvidersService {
   }
 
   findAll() {
-    return this.providerRepository.find({
-      relations : {
-        products: true,
-      }
-    });
+    return this.providerRepository.find();
   }
 
-  findByName(name: string){
-    const provider = this.providerRepository.findBy({
+  async findByName(name: string){
+    const provider = await this.providerRepository.findBy({
       providerName: Like(`%${name}%`)
     });
-    if(!provider) throw new NotFoundException();
-    return provider;
+    if(!provider) {
+      throw new NotFoundException('The provider does not exist');
+    } return provider;
   }
 
   async findOne(id: string) {
-    const provider = await this.providerRepository
-    .createQueryBuilder('provider')
-    .leftJoinAndSelect('provider.products', 'product')
-    .where('"provider"."providerId" = :id', { id })
-    .getOne()
-
-    if(!provider) { 
-      throw new NotFoundException(`Provider with ID ${id} not found`);
+    const provider = await this.providerRepository.findOneBy({providerId: id});
+    if (!provider) {
+      throw new NotFoundException("Provider not found");
     }
     return provider;
   }
@@ -50,16 +41,15 @@ export class ProvidersService {
       providerId: id,
         ...updateProviderDto,
     });
-    if (!product) throw new BadRequestException(`Provider with ID ${id} not found`);
+    if (!product) {
+      throw new BadRequestException(`Provider with ID ${id} not found`);
+    }
     return this.providerRepository.save(product);
   }
 
-  remove(id: string) {
-    this.providerRepository.delete({
-      providerId: id,
-    });
-    return {
-      message: 'Provider deleted successfully',
-    }
+  async remove(id: string) {
+    const provider = await this.findOne(id);
+    await this.providerRepository.remove(provider)
+    return "Provider eliminated"
   }
 }

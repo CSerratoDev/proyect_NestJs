@@ -13,7 +13,8 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags("Providers")
 @Controller('providers')
 export class ProvidersController {
-  constructor(private readonly providersService: ProvidersService) {}
+  constructor(private readonly providersService: ProvidersService 
+  ) {}
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Post()
@@ -24,7 +25,9 @@ export class ProvidersController {
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Get()
   findAll(@UserData() user: User) {
-    if(user.userRoles.includes("Employee")) throw new UnauthorizedException("No estas autorizado, solo Admins y Managers");
+    if(user.userRoles.includes("Employee")) {
+      throw new UnauthorizedException("You aren't authorized");
+    }
     return this.providersService.findAll();
   }
 
@@ -36,7 +39,7 @@ export class ProvidersController {
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Get(':id')
-  findOne(@Param('id', new ParseUUIDPipe({version: '4'})) id: string) {
+  findOne(@Param('id') id: string) {
       return this.providersService.findOne(id);
   }
 

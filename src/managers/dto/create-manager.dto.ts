@@ -1,18 +1,22 @@
-import { IsEmail, IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
 import { Location } from "src/locations/entities/location.entity";
-import { Manager } from "../entities/manager.entity";
 
-export class CreateManagerDto extends Manager{
+export class CreateManagerDto {
+    @IsNotEmpty({message:'Manager Full Name is required'})
     @IsString()
     @MaxLength(80)
     declare managerFullName: string;
+    @IsNotEmpty({message:'Manager email is required'})
     @IsEmail()
     declare managerEmail: string;
+    @IsNotEmpty({message:'Manager salary is required'})
     @IsNumber()
     declare managerSalary: number;
+    @IsNotEmpty({message:'Manager Phone Number is required'})
     @IsString()
     @MaxLength(16)
-    declare managarPhoneNumber: number;
+    declare managerPhoneNumber: string;
+    
     @IsNumber()
     @IsOptional()
     declare location : Location;
