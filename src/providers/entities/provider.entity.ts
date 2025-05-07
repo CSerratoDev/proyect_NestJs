@@ -17,6 +17,6 @@ export class Provider {
     })
     providerPhoneNumber!: string;
     
-    @OneToMany(() => Product, (product) => product.provider)
-    products!: Product[]
+    @OneToMany(() => Product, (product) => product.provider, {cascade: true})
+    products!: Product[];
 }

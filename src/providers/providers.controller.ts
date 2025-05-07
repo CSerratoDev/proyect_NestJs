@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UnauthorizedException, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UnauthorizedException } from '@nestjs/common';
 import { ProvidersService } from './providers.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
@@ -45,7 +45,9 @@ export class ProvidersController {
 
   @Auth(ROLES.MANAGER)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProviderDto: UpdateProviderDto) {
+  update(@Param('id') id: string, 
+  @Body() updateProviderDto: UpdateProviderDto
+  ) {
     return this.providersService.update(id, updateProviderDto);
   }
 

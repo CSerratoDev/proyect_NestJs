@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, ValidationPipe, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -6,6 +6,7 @@ import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ROLES } from 'src/auth/constanst/roles.constants';
 import { apiAuth } from 'src/auth/decorators/api.decorator';
 import { ApiTags } from '@nestjs/swagger';
+import { GetProductQueryDto } from './dto/get-product.dto';
 
 @apiAuth()
 @ApiTags("Products")
@@ -21,8 +22,9 @@ export class ProductsController {
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  findAll(@Query() query: GetProductQueryDto) {
+    const provider = query.provider_id ? query.provider_id : null
+    return this.productsService.findAll(provider);
   }
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)

@@ -2,23 +2,55 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import {v4 as uuid} from 'uuid';
 import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Provider } from '../providers/entities/provider.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectRepository(Product)
-    private productRepository: Repository<Product>){}
+    @InjectRepository(Product) private readonly productRepository: Repository<Product>,
+    @InjectRepository(Provider) private readonly categoryRepository: Repository<Provider>
+  ){}
 
   create(createProductDto: CreateProductDto) {
     const product = this.productRepository.save(createProductDto);
     return product;
   }
 
-  findAll() {
-    return this.productRepository.find();
+  async findAll(productId : string | null) {
+    if(productId) {
+      const [products, total] = await this.productRepository.findAndCount({
+        where: {
+          provider: {
+            providerId : productId
+          }
+        },
+        relations: {
+          provider: true
+        },
+        order: {
+          productId: 'DESC'
+        }
+      })
+      return {
+        products,
+        total
+      }
+    }
+    
+    const [products, total] = await this.productRepository.findAndCount({
+      relations: {
+        provider: true
+      },
+      order: {
+        productId: 'DESC'
+      }
+    })
+    return{
+      products,
+      total
+    }
   }
 
   findOne(id: string) {
