@@ -13,8 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags("Providers")
 @Controller('providers')
 export class ProvidersController {
-  constructor(private readonly providersService: ProvidersService 
-  ) {}
+  constructor(private readonly providersService: ProvidersService) {}
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
   @Post()
@@ -22,32 +21,21 @@ export class ProvidersController {
     return this.providersService.create(createProviderDto);
   }
 
-  @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
+  @Auth(ROLES.MANAGER)  // Solo Manager puede ver todos los proveedores
   @Get()
-  findAll(@UserData() user: User) {
-    if(user.userRoles.includes("Employee")) {
-      throw new UnauthorizedException("You aren't authorized");
-    }
+  findAll() {
     return this.providersService.findAll();
   }
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
-  @Get(':name')
-  findByName(@Param('name') name: string){
-    return this.providersService.findByName(name);
-  }
-
-  @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
-  @Get(':id')
+  @Get(':id')  // Mantener la ruta para 'findOne' que usa el ID
   findOne(@Param('id') id: string) {
-      return this.providersService.findOne(id);
+    return this.providersService.findOne(id);
   }
 
   @Auth(ROLES.MANAGER)
   @Patch(':id')
-  update(@Param('id') id: string, 
-  @Body() updateProviderDto: UpdateProviderDto
-  ) {
+  update(@Param('id') id: string, @Body() updateProviderDto: UpdateProviderDto) {
     return this.providersService.update(id, updateProviderDto);
   }
 

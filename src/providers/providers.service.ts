@@ -3,7 +3,7 @@ import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
 import { Provider } from './entities/provider.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class ProvidersService {
@@ -19,37 +19,38 @@ export class ProvidersService {
     return this.providerRepository.find();
   }
 
-  async findByName(name: string){
-    const provider = await this.providerRepository.findBy({
-      providerName: Like(`%${name}%`)
-    });
-    if(!provider) {
-      throw new NotFoundException('The provider does not exist');
-    } return provider;
-  }
-
+  // Método findOne actualizado para buscar por ID exacto
   async findOne(id: string) {
-    const provider = await this.providerRepository.findOneBy({providerId: id});
+    const provider = await this.providerRepository.findOne({
+      where: { providerId: id },  // Busca exactamente por ID
+    });
+
     if (!provider) {
-      throw new NotFoundException("Provider not found");
+      throw new NotFoundException('Provider not found');
     }
+
     return provider;
   }
 
+  // Método de actualización mejorado
   async update(id: string, updateProviderDto: UpdateProviderDto) {
-    const product = await this.providerRepository.preload({
-      providerId: id,
-        ...updateProviderDto,
+    const provider = await this.providerRepository.findOne({
+      where: { providerId: id },  // Busca el provider por ID
     });
-    if (!product) {
+
+    if (!provider) {
       throw new BadRequestException(`Provider with ID ${id} not found`);
     }
-    return this.providerRepository.save(product);
+
+    // Actualiza las propiedades del provider
+    Object.assign(provider, updateProviderDto);
+    return this.providerRepository.save(provider);
   }
 
+  // Eliminar un provider
   async remove(id: string) {
-    const provider = await this.findOne(id);
-    await this.providerRepository.remove(provider)
-    return "Provider eliminated"
+    const provider = await this.findOne(id);  // Encuentra el provider
+    await this.providerRepository.remove(provider);  // Elimina
+    return 'Provider eliminated';
   }
 }
